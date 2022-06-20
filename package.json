@@ -1,0 +1,23 @@
+{
+  "name": "auto-git",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/leewan-09/auto-git"
+  },
+  "scripts": {
+    "start": "node ."
+  },
+  "bin": "./index.js",
+  "author": "leewan-09",
+  "license": "ISC",
+  "dependencies": {
+    "@octokit/rest": "^18.12.0",
+    "chalk": "^5.0.1",
+    "inquirer": "^9.0.0",
+    "nconf": "^0.12.0"
+  }
+}
