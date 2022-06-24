@@ -67,7 +67,6 @@ async function ask() {
 
 async function getToken() {
   let token = await keytar.getPassword('git_auto', 'AUTO_GIT_TOKEN');
-  console.log(token);
 
   if (!token) {
     token = await saveToken();
@@ -85,7 +84,7 @@ async function saveToken() {
     },
   ]);
   try {
-    await keytar.setPassword('git_auto', 'AUTO_GIT_TOKEN', 'hihihi');
+    await keytar.setPassword('git_auto', 'AUTO_GIT_TOKEN', answer.token);
   } catch (error) {
     console.log(error);
   }
