@@ -4,9 +4,7 @@ import chalk from 'chalk';
 import inquirer from 'inquirer';
 import { Octokit } from '@octokit/rest';
 import { exec } from 'child_process';
-import nconf from 'nconf';
-
-nconf.use('file', { file: './config.json' });
+import keytar from 'keytar';
 
 let repo_name;
 let is_repo_pvt;
@@ -68,7 +66,8 @@ async function ask() {
 }
 
 async function getToken() {
-  let token = nconf.get('AUTO_GIT_TOKEN');
+  let token = await keytar.getPassword('git_auto', 'AUTO_GIT_TOKEN');
+  console.log(token);
 
   if (!token) {
     token = await saveToken();
@@ -85,25 +84,16 @@ async function saveToken() {
       message: chalk.blueBright('Git Personal Access Tokens:'),
     },
   ]);
-  nconf.set('AUTO_GIT_TOKEN', answer.token);
-  nconf.save(function (err) {
-    if (err) {
-      console.error(err.message);
-      return;
-    }
-  });
-
+  try {
+    await keytar.setPassword('git_auto', 'AUTO_GIT_TOKEN', 'hihihi');
+  } catch (error) {
+    console.log(error);
+  }
   return answer.token;
 }
 
 async function resetToken() {
-  nconf.set('AUTO_GIT_TOKEN', '');
-  nconf.save(function (err) {
-    if (err) {
-      console.error(err.message);
-      return;
-    }
-  });
+  await keytar.deletePassword('git_auto', 'AUTO_GIT_TOKEN');
 }
 
 function execute(command, callback) {
